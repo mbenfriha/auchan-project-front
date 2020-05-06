@@ -1,0 +1,40 @@
+@font-face {
+  font-family: "Brandon Grotesque";
+  src: url("../assets/brandon-grotesque-medium.otf");
+}
+
+
+body {
+  font-family: Brandon Grotesque !important;
+}
+
+.is-invalid span.dropdown-btn {
+  border: 1px solid #dc3545;
+}
+
+span.dropdown-btn {
+  border: 1px solid #dc3545;
+}
+
+.navbar {
+  background-color: #5da316;
+  color: white;
+}
+.navbar a {
+  color: white;
+  font-family: Brandon Grotesque !important;
+  font-size: 20px;
+}
+
+.link {
+  color: #5da316;
+  font-family: Brandon Grotesque !important;
+
+}
+
+.navbar-brand img {
+  width: 50px;
+}
+
+
+

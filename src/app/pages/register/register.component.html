@@ -1,0 +1,40 @@
+<h2>Inscription</h2>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+      <div *ngIf="f.email.errors.required">Email is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="username">Pseudo</label>
+    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+      <div *ngIf="f.username.errors.required">Username is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">Mot de passe</label>
+    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+      <div *ngIf="f.password.errors.required">Password is required</div>
+      <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password2">Retaper mot de passe</label>
+    <input type="password" formControlName="password2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password2.errors }" />
+    <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
+      <div *ngIf="f.password2.errors.required">Retype Password is required</div>
+      <div *ngIf="f.password2.errors.minlength">Password must be at least 6 characters</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <button [disabled]="loading" class="btn btn-had">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Inscription
+    </button>
+    <a routerLink="/login" class="btn btn-link-had">Annuler</a>
+  </div>
+</form>
