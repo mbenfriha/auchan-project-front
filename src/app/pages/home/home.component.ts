@@ -26,7 +26,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   countCat: number;
   returnUrl: string;
   returnU = 'returnUrl';
-  typeCoursList=[
+  loading = false;
+
+    typeCoursList=[
     {_id:1, nomCours:'Mathématiques'},
     {_id:2, nomCours:'Français'},
     {_id:3, nomCours:'Histoire-Géographie'},
@@ -90,10 +92,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log(this.users);  
   }
 
-  contactStudent(_index){
-    this.selectUser = this.users[_index];
-    this.userService.mailSender(this.selectUser.email, this.currentUser.email);
+    contactStudent(user){
+        this.loading = true;
 
-  }
+        console.log("send mail" + user.email);
+        this.userService.mailSender(user.email, this.currentUser.email)
+            .subscribe(
+                data => {
+                    this.alertService.success('Votre prise de contacte a bien été envoyé !')
+                    this.loading = false;
+                },
+                error => {
+                    this.alertService.error('Une erreur est survenue : ' + error);
+                    this.loading = false;
+                });
+    }
+
   
 }

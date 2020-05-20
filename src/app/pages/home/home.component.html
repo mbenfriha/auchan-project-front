@@ -40,8 +40,10 @@
             <td>{{user.email}}</td>
             <td>
                 <div class="form-group">
-                    <button (click)="contactStudent(i)" class="btn btn-success">
-                      Contacter
+
+                    <button [disabled]="loading" (click)="contactStudent(user)" class="btn btn-success">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Contacter
                     </button>
                 </div>
             </td>

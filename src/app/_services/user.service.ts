@@ -14,7 +14,7 @@ export class UserService {
   }
 
   mailSender(emailStudent, emailParent) {
-    return this.http.post(this.url + `mail`, emailStudent, emailStudent);
+    return this.http.post(this.url + `mail`, {emailStudent, emailParent});
   }
 
   getAll() {
