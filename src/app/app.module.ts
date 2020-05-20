@@ -14,6 +14,7 @@ import {JwtInterceptor, ErrorInterceptor} from './_helpers';
 import {CommonModule} from '@angular/common';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AlertComponent
+    AlertComponent,
   ],
   imports: [
     CommonModule,
@@ -31,8 +32,10 @@ import {NgxPaginationModule} from 'ngx-pagination';
     FormsModule,
     HttpClientModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    Ng2SearchPipeModule,
   ],
+  
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }

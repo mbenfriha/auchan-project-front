@@ -1,40 +1,157 @@
+ <!--Import Google Icon Font-->
+ <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> -->
+ <!--Import materialize.css-->
+ <!-- <link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"  media="screen,projection"/> -->
+
+
+
 <h2>Inscription</h2>
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
-    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
-      <div *ngIf="f.email.errors.required">Email is required</div>
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="username">Pseudo</label>
+        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+        <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <div *ngIf="f.username.errors.required">Username is required</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="username">Pseudo</label>
-    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-      <div *ngIf="f.username.errors.required">Username is required</div>
+
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <div *ngIf="f.password.errors.required">Password is required</div>
+          <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label for="password2">Retaper mot de passe</label>
+        <input type="password" formControlName="password2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password2.errors }" />
+        <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
+          <div *ngIf="f.password2.errors.required">Retype Password is required</div>
+          <div *ngIf="f.password2.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+      </div>
     </div>
   </div>
+
   <div class="form-group">
-    <label for="password">Mot de passe</label>
-    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-      <div *ngIf="f.password.errors.required">Password is required</div>
-      <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+    <label class="mdb-main-label" for="selected"> Veuillez sélectionner votre catégorie</label>
+    <select class="mdb-select md-form colorful-select dropdown-primary" name="selected" formControlName="selected">
+      <option value="parent">Parent</option>
+      <option value="etudiant">Etudiant</option> 
+    </select>
+    
+      
+</div> 
+
+<div *ngIf="f.selected.value == 'etudiant'">
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="mdb-main-label" for="school"> Veuillez sélectionner votre école</label>
+        <select class="mdb-select md-form colorful-select dropdown-primary form-control" (change)="checkSchool()" name="school" formControlName="school">
+          <option  *ngFor="let ecole of ecoles; let i = index" [ngValue]="ecole">{{ecole.name}}</option>
+        </select>
+        <div *ngIf="!validSchool">
+          L'école et le mail ne correspondent pas
+        </div>
+        
+        
+      </div> 
+    </div>
+    <div class="col 6">
+      <div class="form-group">
+      <label class="mdb-main-label"> Veuillez importer votre carte d'identité</label>
+      <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
     </div>
   </div>
-  <div class="form-group">
-    <label for="password2">Retaper mot de passe</label>
-    <input type="password" formControlName="password2" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password2.errors }" />
-    <div *ngIf="submitted && f.password2.errors" class="invalid-feedback">
-      <div *ngIf="f.password2.errors.required">Retype Password is required</div>
-      <div *ngIf="f.password2.errors.minlength">Password must be at least 6 characters</div>
+
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+        <label class="mdb-main-label"> Veuillez importer votre carte d'étudiant</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label class="mdb-main-label"> Veuillez importer votre certificat de scolarité</label>
+        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+      </div>
     </div>
   </div>
+  <br>
+
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+      <ng-multiselect-dropdown
+        [placeholder]="'Selectionnez le (s)cours'"
+        [settings]="dropdownSettings1"
+        [data]="typeCoursList"
+        formControlName="selectedItems">
+      </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+      <ng-multiselect-dropdown
+        [placeholder]="'Selectionnez le (s) Niveau (x)'"
+        [settings]="dropdownSettings2"
+        [data]="lesNiveaux"
+        formControlName="selectedItems1">
+      </ng-multiselect-dropdown>
+      </div>
+    </div>
+  </div>
+  <br>
+  
+  <div class="row row-space">
+    <div class="col-6">
+      <div class="form-group">
+        <label for="dateHeure">Date disponible</label>
+        <input type="datetime-local" name="dateHeure" formControlName="dateHeure">
+      </div>
+    </div>
+    <div class="col-6">
+      <button type="button" class="btn btn-success" >Ajouter Date</button>
+    </div>
+  </div>
+</div>
+  <br>
+<div *ngIf="f.selected.value == 'parent'">
   <div class="form-group">
+    <label for="nbreDenfants">Nombre d'enfants</label>
+    <input type="text" formControlName="nbreDenfants" class="form-control" />
+    
+  </div>
+</div>
+<div class="form-group">
     <button [disabled]="loading" class="btn btn-had">
       <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
       Inscription
     </button>
     <a routerLink="/login" class="btn btn-link-had">Annuler</a>
-  </div>
+</div>
 </form>
+
+<!--JavaScript at end of body for optimized loading-->
+      <!-- <script type="text/javascript" src="../materialize/js/materialize.min.js"></script> -->

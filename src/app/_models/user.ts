@@ -6,4 +6,9 @@ export class User {
   token: string;
   role: string;
   active: boolean;
+  documents: [];
+  horaires: [];
+  nbreDenfants: Number;
+  cours: [];
+  niveaux: [];
 }

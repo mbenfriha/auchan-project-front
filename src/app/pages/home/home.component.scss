@@ -9,3 +9,11 @@ h1 {
 .card {
   cursor:pointer;
 }
+.active-pink input.form-control[type=text] {
+  border-bottom: 1px solid #fc0505;
+  box-shadow: 0 1px 0 0 #ff0303;
+}
+
+.btn {
+  background-color: #fc0505;
+}

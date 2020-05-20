@@ -13,8 +13,18 @@ export class UserService {
     return this.http.post(this.url + `register`, user);
   }
 
+  mailSender(emailStudent, emailParent) {
+    return this.http.post(this.url + `mail`, emailStudent, emailStudent);
+  }
+
   getAll() {
     return this.http.get<User[]>(this.url + `users`);
+  }
+  getAllStudent() {
+    return this.http.get<User[]>(this.url + `users/student`);
+  }
+  getTypeCours(typeCours) {
+    return this.http.get<[User]>(this.url + `users/` + typeCours);
   }
 
   setActive(userId) {

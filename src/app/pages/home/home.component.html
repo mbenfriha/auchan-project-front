@@ -1,2 +1,52 @@
-<h1> HOME</h1>
-<h2>HELLO {{currentUser.username}}!</h2>
+<!-- Search form -->
+<form [formGroup]="searchForm">
+<div class= "row row-space">
+    <div class="col-4">
+        <ng-multiselect-dropdown
+        [placeholder]="'Selectionnez le (s)cours'"
+        [settings]="dropdownSettings1"
+        [data]="typeCoursList"
+        formControlName="typeCours">
+      </ng-multiselect-dropdown>    </div>
+
+    <div class="col-4">
+            <input class="form-control" type="datetime-local" name="searchJour" formControlName="joursEtheure" placeholder="Jour"
+            aria-label="Search" >
+    </div>
+
+    <div class="col-4">
+        <button class="btn" (click)="onSubmit()">Search</button>
+    </div>
+    
+</div>
+</form>
+<br><br>
+
+<div>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Nom d'utilisateur</th>
+            <th scope="col">Email</th>
+            <th scope="col">Options</th>
+            <!-- <th scope="col">Heure</th> -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users; let i=index">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>
+                <div class="form-group">
+                    <button (click)="contactStudent(i)" class="btn btn-success">
+                      Contacter
+                    </button>
+                </div>
+            </td>
+            <!-- <td>@mdo</td> -->
+        </tr>
+        </tbody>
+    </table>
+</div>
