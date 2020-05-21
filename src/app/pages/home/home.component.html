@@ -1,54 +1,182 @@
 <!-- Search form -->
-<form [formGroup]="searchForm">
-<div class= "row row-space">
-    <div class="col-4">
-        <ng-multiselect-dropdown
-        [placeholder]="'Selectionnez le (s)cours'"
-        [settings]="dropdownSettings1"
-        [data]="typeCoursList"
-        formControlName="typeCours">
-      </ng-multiselect-dropdown>    </div>
+<div *ngIf="currentUser.role == 'parent'">
+    <h1>Chercher un étudiant</h1>
+    <form [formGroup]="searchForm">
+        <div class= "row row-space">
+            <div class="col-4">
+                <ng-multiselect-dropdown
+                        [placeholder]="'Selectionnez le (s)cours'"
+                        [settings]="dropdownSettings1"
+                        [data]="typeCoursList"
+                        formControlName="typeCours">
+                </ng-multiselect-dropdown>    </div>
 
-    <div class="col-4">
-            <input class="form-control" type="datetime-local" name="searchJour" formControlName="joursEtheure" placeholder="Jour"
-            aria-label="Search" >
-    </div>
+            <div class="col-4">
+                <input class="form-control" type="datetime-local" name="searchJour" formControlName="joursEtheure" placeholder="Jour"
+                       aria-label="Search" >
+            </div>
 
-    <div class="col-4">
-        <button class="btn" (click)="onSubmit()">Search</button>
+            <div class="col-4">
+                <button class="btn" (click)="onSubmit()">Chercher</button>
+            </div>
+
+        </div>
+    </form>
+    <br><br>
+
+    <div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">cours</th>
+                <th scope="col">Options</th>
+                <!-- <th scope="col">Heure</th> -->
+            </tr>
+            </thead>
+            <tbody *ngIf="users && users.length > 0">
+            <tr *ngFor="let user of users; let i=index">
+                <td>{{'Étudiant '+i}}</td>
+                <td><span  class="badge badge-success" *ngFor="let cour of user.cours">{{cour.nomCours}}</span></td>
+                <td>
+                    <div class="form-group">
+
+                        <button [disabled]="loading" (click)="contactStudent(user)" class="btn btn-success">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Contacter
+                        </button>
+                    </div>
+                </td>
+                <!-- <td>@mdo</td> -->
+            </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="users.length < 1" style="text-align: center">
+            Aucun étudiant
+        </div>
     </div>
-    
 </div>
-</form>
-<br><br>
 
-<div>
-    <table class="table table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">id</th>
-            <th scope="col">Nom d'utilisateur</th>
-            <th scope="col">Email</th>
-            <th scope="col">Options</th>
-            <!-- <th scope="col">Heure</th> -->
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let user of users; let i=index">
-            <td>{{user.id}}</td>
-            <td>{{user.username}}</td>
-            <td>{{user.email}}</td>
-            <td>
+
+<div  *ngIf="currentUser.role == 'etudiant'">
+
+    <h1>Éditer mon profil</h1>
+
+    <form [formGroup]="updateForm" (ngSubmit)="updateCourStudent()">
+
+
+        <div class="row row-space">
+            <div class="col-8">
                 <div class="form-group">
-
-                    <button [disabled]="loading" (click)="contactStudent(user)" class="btn btn-success">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                        Contacter
-                    </button>
+                    <ng-multiselect-dropdown
+                            [placeholder]="'Selectionnez le (s)cours'"
+                            [settings]="dropdownSettingsCours"
+                            [data]="typeCoursList"
+                            formControlName="selectedItems">
+                    </ng-multiselect-dropdown>
                 </div>
-            </td>
-            <!-- <td>@mdo</td> -->
-        </tr>
-        </tbody>
-    </table>
+            </div>
+            <div class="col-4">
+                <button [disabled]="loading" class="btn btn-had">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Mettre à jour
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div  *ngIf="currentUser.role == 'admin'">
+
+    <h1>Administration</h1>
+
+    <div class="card-deck">
+        <div class="card text-white bg-primary" >
+            <div class="card-header">Nombre d'étudiants</div>
+            <div class="card-body">
+                <h5 class="card-title">{{count.student}} étudiants</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="card text-white bg-info" >
+            <div class="card-header">Nombre de parents</div>
+            <div class="card-body">
+                <h5 class="card-title">{{count.parent}} parents</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="card text-white bg-success">
+            <div class="card-header">Nombre de prise de contact</div>
+            <div class="card-body">
+                <h5 class="card-title">{{count.contact}} prise de contact</h5>
+                <p class="card-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+
+        <h2>Mettre à jours le mot de passe</h2>
+        <div class="row row-space">
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid':submittedP && formP.password.errors }" />
+                    <div *ngIf="submittedP && formP.password.errors" class="invalid-feedback">
+                        <div *ngIf="formP.password.errors.required">Password is required</div>
+                        <div *ngIf="formP.password.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="form-group">
+                    <label for="password2">Retaper mot de passe</label>
+                    <input type="password" formControlName="password2" class="form-control" [ngClass]="{ 'is-invalid': submittedP && formP.password2.errors }" />
+                    <div *ngIf="submittedP && formP.password2.errors" class="invalid-feedback">
+                        <div *ngIf="formP.password2.errors.required">Retype Password is required</div>
+                        <div *ngIf="formP.password2.errors.minlength">Password must be at least 6 characters</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <button [disabled]="loading" class="btn btn-had" style="margin-top: 2em;">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Mettre à jour
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <div class="table-responsive-sm">
+
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Email</th>
+                <th scope="col">type</th>
+                <th scope="col">Options</th>
+                <!-- <th scope="col">Heure</th> -->
+            </tr>
+            </thead>
+            <tbody *ngIf="users && users.length > 0">
+            <tr *ngFor="let user of users; let i=index">
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td *ngIf="user.role !== 'admin'">
+                    <a (click)="setActiveUser(user._id)" *ngIf="!user.active" class="text-success">Activer compte</a>
+                    <a (click)="setActiveUser(user._id)" *ngIf="user.active" class="text-danger">Désactiver compte</a>
+                </td>
+                <td *ngIf="user.role == 'admin'">
+                </td>
+                <!-- <td>@mdo</td> -->
+            </tr>
+            </tbody>
+        </table>
+
+        <div *ngIf="users.length < 1" style="text-align: center">
+            Aucun étudiant
+        </div>
+    </div>
 </div>

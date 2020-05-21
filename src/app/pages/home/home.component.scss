@@ -1,7 +1,7 @@
 h1 {
   font-family: Brandon Grotesque !important;
   text-align: center;
-  color: #5da316;
+  color: #fc0505;
   text-transform: uppercase;
 }
 
@@ -16,4 +16,17 @@ h1 {
 
 .btn {
   background-color: #fc0505;
+  color: white;
+}
+
+.badge {
+  margin-right: 5px;
+}
+
+td .text-danger, td .text-success {
+  cursor: pointer;
+}
+
+.card-deck {
+  margin-bottom: 3em;
 }
